@@ -1,0 +1,26 @@
+{
+  "template": "https://github.com/l-mds/local-data-stack.git",
+  "commit": "c2f61f824f6842ff46b60968e95275ef11bc5a7b",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "interview",
+      "organization": "myorg",
+      "project_slug": "interview",
+      "project_slug_pixi": "interview",
+      "author": "Nadia Alloppi",
+      "author_email": "Your@email.com",
+      "cloudflare_api_key": "<<your-secret-key>>",
+      "cloudflare_email": "<<your-e-mail>>",
+      "root_domain": "<<yourdomain.com>>",
+      "time_zone": "Europe/Vienna",
+      "state_path": "/Users/giacomo/Desktop/Nadia/interview-z_state",
+      "_extensions": [
+        "jinja2_ospath.extensions.OSPathExtension"
+      ],
+      "_template": "https://github.com/l-mds/local-data-stack.git",
+      "_commit": "c2f61f824f6842ff46b60968e95275ef11bc5a7b"
+    }
+  },
+  "directory": null
+}
