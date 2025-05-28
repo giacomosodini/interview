@@ -86,7 +86,6 @@ ipywidgets = "~=8.1.5"
 
 [tool.pixi.feature.dagster-basics.pypi-dependencies]
 dagster = ">=1.9.11,<1.10"
-dagster-postgres = ">=0.25.11,<0.26"
 dagster-cloud = ">=1.9.11,<1.10"
 
 [tool.pixi.feature.dagster-daemon.pypi-dependencies]
