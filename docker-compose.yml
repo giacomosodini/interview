@@ -27,9 +27,6 @@ services:
     #ports:
     #  - "5434:5432"
     restart: always
-    volumes:
-      - /Users/giacomo/Desktop/Nadia/interview-z_state/dagster_postgres:/var/lib/postgresql/data
-      #- ./services/orchestration/init.sql:/docker-entrypoint-initdb.d/init.sql
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
