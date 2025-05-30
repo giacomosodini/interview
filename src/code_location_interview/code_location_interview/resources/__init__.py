@@ -46,7 +46,9 @@ RESOURCES_LOCAL = {
             .resolve()
         )
     ),
-    "local_io_manager": fs_io_manager,
+    "local_io_manager": fs_io_manager.configured({
+    "base_dir": "/Users/giacomo/Desktop/Nadia/interview/dagster_local_storage"
+    }),
 }
 
 RESOURCES_PROD = {
