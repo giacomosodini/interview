@@ -687,3 +687,6 @@ src/interview/code_location_interview_dbt/config/.user.yml
 src/interview/code_location_interview_dbt/analytics_database_dev.duckdb
 src/interview/code_location_interview_dbt/analytics_database_prod.duckdb
 z_state/
+
+
+tmp*/

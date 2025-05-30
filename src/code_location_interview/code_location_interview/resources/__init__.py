@@ -5,7 +5,7 @@ from dagster_dbt import DbtCliResource, DbtProject
 from shared_library.orchestration.resources.utils import (
     get_dagster_deployment_environment,
 )
-
+from dagster import Definitions, fs_io_manager
 from .duckdb_path import DuckDBPathResource
 
 DBT_PROJECT_DIR = file_relative_path(__file__, "../../code_location_interview_dbt")
@@ -46,6 +46,7 @@ RESOURCES_LOCAL = {
             .resolve()
         )
     ),
+    "local_io_manager": fs_io_manager,
 }
 
 RESOURCES_PROD = {

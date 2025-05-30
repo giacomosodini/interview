@@ -20,7 +20,7 @@ group_name = "churn_smartphone_get_data"
         "rating_account_id": AssetOut(),
         "unique_customer_ids": AssetOut(),
         "core_data": AssetOut(
-            io_manager_key="bigquery_io_manager",
+            io_manager_key="local_io_manager",
         ),
     },
 )
@@ -136,7 +136,7 @@ def core_data():
 
 @asset(
     group_name=group_name,
-    io_manager_key="bigquery_io_manager",
+    io_manager_key="local_io_manager",
 )
 def bills(rating_account_id):
     # Create a DataFrame with all combinations of 'rating_account_id's and dates
@@ -173,7 +173,7 @@ def bills(rating_account_id):
 
 @asset(
     group_name=group_name,
-    io_manager_key="bigquery_io_manager",
+    io_manager_key="local_io_manager",
 )
 def aggregated_bills(bills):
     aggregated_bills = (
@@ -187,7 +187,7 @@ def aggregated_bills(bills):
 
 @asset(
     group_name=group_name,
-    io_manager_key="bigquery_io_manager",
+    io_manager_key="local_io_manager",
 )
 def lisa_cases(unique_customer_ids):
     # Randomly select 50% of customer IDs without replacement
@@ -228,7 +228,7 @@ def lisa_cases(unique_customer_ids):
 
 @asset(
     group_name=group_name,
-    io_manager_key="bigquery_io_manager",
+    io_manager_key="local_io_manager",
 )
 def pivoted_lisa_cases(lisa_cases):
     lisa_cases = lisa_cases.set_index("customer_id")
@@ -250,7 +250,7 @@ def pivoted_lisa_cases(lisa_cases):
 
 @asset(
     group_name=group_name,
-    io_manager_key="bigquery_io_manager",
+    io_manager_key="local_io_manager",
 )
 def df_input_raw(core_data, aggregated_bills, pivoted_lisa_cases):
     df_input_raw = core_data.merge(aggregated_bills, on="rating_account_id", how="left").merge(
@@ -292,7 +292,7 @@ def df_input_raw(core_data, aggregated_bills, pivoted_lisa_cases):
 
 @asset(
     group_name=group_name,
-    io_manager_key="bigquery_io_manager",
+    io_manager_key="local_io_manager",
 )
 def df_input_preprocessed(df_input_raw):
     """
