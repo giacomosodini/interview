@@ -16,7 +16,7 @@ group_name = "churn_smartphone_predict"
 
 @asset(
     group_name=group_name,
-    io_manager_key="local_io_manager",
+    
 )
 def predictions(classifier, df_input_preprocessed):
     # Not really convenient to reset index every time

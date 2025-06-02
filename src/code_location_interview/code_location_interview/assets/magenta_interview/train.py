@@ -26,10 +26,10 @@ group_name = "churn_smartphone_training"
     group_name=group_name,
     outs={
         "train_data": AssetOut(
-            io_manager_key="local_io_manager",
+            
         ),
         "test_data": AssetOut(
-            io_manager_key="local_io_manager",
+            
         ),
     },
 )
@@ -92,7 +92,7 @@ def classifier(train_data):
 
 @asset(
     group_name=group_name,
-    io_manager_key="local_io_manager",
+    
 )
 def evaluation_metrics(classifier, test_data):
     y_test = test_data.pop("has_churned")
