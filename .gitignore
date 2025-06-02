@@ -12,7 +12,7 @@ src/code-location-foo/quickstart_etl/__pycache__/
 ## Angular ##
 # compiled output
 dist/
-tmp/
+tmp*/
 app/**/*.js
 app/**/*.js.map
 
