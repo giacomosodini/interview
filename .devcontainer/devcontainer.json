@@ -13,7 +13,7 @@
   "forwardPorts": [3000],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "pixi install -e dev"
+  "postCreateCommand": "pixi global install git && pixi install -e dev"
 
   // Configure tool-specific properties.
   // "customizations": {},
