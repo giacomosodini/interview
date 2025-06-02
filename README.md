@@ -1,49 +1,25 @@
-# dagster example
+# Interview 
 
-To update to the latest template
+This repository contains example pipelines and data for interview challenges.
 
-```bash
-pixi run tpl-update
-```
+> This is an instance of https://github.com/l-mds/local-data-stack it may be useful for your own data projects.
 
-```bash
-# dependency upgrade/change
-pixi update
+## usage
 
-
-# launch a shell
-pixi shell --frozen -e ci-validation
-cd src/code_location_interview/code_location_interview_dbt/ && dbt deps
-cd ../../../
-```
-
-## dagster
-
-set `DAGSTER_HOME` to have persistent logs
-
-```bash
-# for a single code location
-pixi shell --frozen -e ci-validation
-
-dagster dev
-# alternatively:
-pixi run -e ci-validation start-dev
+- pixi: https://pixi.sh/latest/advanced/installation/
+- then: `pixi run start-dev`
+- go to http://localhost:3000
+- work on the assignments
 
 
-dagster job list --location foo
-dagster job launch --location foo -j all_assets_job
-```
-
-## docker
+## advanced usage
+# ## docker
 
 ```bash
 docker compose -f docker-compose.yml --profile dagster_onprem up --build
 ```
 
-
-
-
-## .env  file
+### .env  file
 
 Post install:
 
@@ -69,10 +45,4 @@ DAGSTER_IS_DEV_CLI=True
 #DAGSTER_CLOUD_GIT_URL=https://github.com/myorg/interview
 #DAGSTER_CLOUD_GIT_SHA=<<your sha>>
 #DAGSTER_CLOUD_GIT_BRANCH=main
-```
-
-## cleanup
-
-```bash
-pixi run cleanup
 ```

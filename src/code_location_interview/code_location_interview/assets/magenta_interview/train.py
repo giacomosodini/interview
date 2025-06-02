@@ -40,7 +40,7 @@ def split_train_test(df_input_preprocessed):
     return train_data, test_data
 
 
-@asset(group_name=group_name, io_manager_key="local_io_manager")
+@asset(group_name=group_name)
 def classifier(train_data):
     # Dynamically select columns to impute
     columns_to_impute = [col for col in train_data.columns if col.startswith("n_case") or col.startswith("days_since_last_case")]
