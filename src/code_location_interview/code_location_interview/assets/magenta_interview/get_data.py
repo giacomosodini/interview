@@ -99,7 +99,6 @@ def core_data():
         + 0.1  # Higher available GB increases churn probability
         * (gross_mrc > 35)  # Higher gross MRC increases churn probability
     )
-    churn_prob
     churn_prob = np.clip(churn_prob, 0, 1)  # Ensure probabilities are between 0 and 1
     has_churned = np.random.binomial(1, churn_prob)
 
@@ -182,10 +181,8 @@ def aggregated_bills(bills):
 
     return aggregated_bills
 
-
 @asset(
     group_name=group_name,
-    
 )
 def lisa_cases(unique_customer_ids):
     # Randomly select 50% of customer IDs without replacement
@@ -198,7 +195,7 @@ def lisa_cases(unique_customer_ids):
         "produkte&services-tarifdetails",
         "produkte&services-tarifwechsel",
         "rechnungsanfragen",
-        "vvl",
+        "prolongation",
     ]
 
     # For each customer, assign a random number of topics (1 to 3)
@@ -277,11 +274,11 @@ def df_input_raw(core_data, aggregated_bills, pivoted_lisa_cases):
             "n_case_produkte&services-tarifdetails",
             "n_case_produkte&services-tarifwechsel",
             "n_case_rechnungsanfragen",
-            "n_case_vvl",
+            "n_case_prolongation",
             "days_since_last_case_produkte&services-tarifdetails",
             "days_since_last_case_produkte&services-tarifwechsel",
             "days_since_last_case_rechnungsanfragen",
-            "days_since_last_case_vvl",
+            "days_since_last_case_prolongation",
         ]
     ]
 
