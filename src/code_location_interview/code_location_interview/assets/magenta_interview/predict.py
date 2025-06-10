@@ -11,7 +11,7 @@ log_datefmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(stream=sys.stdout, format=log_fmt, datefmt=log_datefmt, level=logging.INFO)
 logger = get_dagster_logger(__name__)
 
-group_name = "churn_smartphone_predict"
+group_name = "predict"
 
 
 @asset(

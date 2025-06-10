@@ -11,7 +11,7 @@ log_datefmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(stream=sys.stdout, format=log_fmt, datefmt=log_datefmt, level=logging.INFO)
 logger = get_dagster_logger(__name__)
 
-group_name = "churn_smartphone_get_data"
+group_name = "get_data"
 
 
 @multi_asset(
@@ -87,28 +87,26 @@ def core_data():
     smartphone_brand_options = ["iPhone", "Samsung", "Huawei", "Xiaomi", "OnePlus"]
     smartphone_brand = np.random.choice(smartphone_brand_options, size=num_rows, p=[0.4, 0.35, 0.2, 0.025, 0.025])
 
-    # Generate 'has_churned' with correlations and adjusted mean churn rate
-    churn_prob = (
-        0.1 * (age > 45)
-        + 0.15  # Older customers have a higher probability to churn
-        * ((contract_lifetime_days >= 650) & (contract_lifetime_days <= 850))
-        + 0.2 * ((remaining_binding_days >= 60) & (remaining_binding_days <= 120))  # Contract lifetime around 2 years
-        + -0.1 * (has_special_offer == 0)  # Remaining binding days between 60 and 120
-        + -0.1 * (is_magenta1_customer == 0)  # Special offer reduces churn probability
-        + 0.05 * (np.array(available_gb, dtype=float) > 30)  # Magenta1 customer reduces churn probability
-        + 0.1  # Higher available GB increases churn probability
-        * (gross_mrc > 35)  # Higher gross MRC increases churn probability
+    # Generate 'has_done_upselling' with correlations and adjusted mean upsell rate
+    upsell_prob = (
+        0.2 * (age < 45)  # Younger customers might be more likely to accept upsell offers
+        + 0.15 * ((contract_lifetime_days >= 300) & (contract_lifetime_days <= 365*4))  # Newer customers might be more open to upsell offers
+        + 0.1 * (remaining_binding_days < 60)  # Customers with few binding days might look for new offers
+        + 0.1 * (is_magenta1_customer == 1)  # Magenta1 customers might be more engaged and open to upsell
+        + 0.2 * (np.array(available_gb, dtype=float) <= 20)  # Customers with less available GB might want more
+        + 0.1 * (gross_mrc < 35)  # Customers with lower gross MRC might be interested in upgrading
     )
-    churn_prob = np.clip(churn_prob, 0, 1)  # Ensure probabilities are between 0 and 1
-    has_churned = np.random.binomial(1, churn_prob)
 
-    # Adjust mean to be around 0.03 by scaling down/up if necessary
-    base_churn_prob = 0.03
-    current_mean = has_churned.mean()
+    upsell_prob = np.clip(upsell_prob, 0, 1)  # Ensure probabilities are between 0 and 1
+    has_done_upselling = np.random.binomial(1, upsell_prob)
+
+    # Adjust mean to be around 0.07 by scaling down/up if necessary
+    base_upsell_prob = 0.07
+    current_mean = has_done_upselling.mean()
     logger.info(current_mean)
-    scaling_factor = base_churn_prob / current_mean if current_mean != 0 else 1
-    adjusted_churn_prob = np.clip(churn_prob * scaling_factor, 0, 1)
-    has_churned = np.random.binomial(1, adjusted_churn_prob)
+    scaling_factor = base_upsell_prob / current_mean if current_mean != 0 else 1
+    adjusted_upsell_prob = np.clip(upsell_prob * scaling_factor, 0, 1)
+    has_done_upselling = np.random.binomial(1, adjusted_upsell_prob)
 
     # Create DataFrame
     logger.info("Create df")
@@ -124,7 +122,7 @@ def core_data():
             "available_gb": available_gb,
             "gross_mrc": gross_mrc,
             "smartphone_brand": smartphone_brand,
-            "has_churned": has_churned,
+            "has_done_upselling": has_done_upselling,
         }
     )
 
@@ -265,7 +263,7 @@ def df_input_raw(core_data, aggregated_bills, pivoted_lisa_cases):
             "available_gb",
             "gross_mrc",
             "smartphone_brand",
-            "has_churned",
+            "has_done_upselling",
             "has_used_roaming",
             "used_gb",
             "has_used_gb",

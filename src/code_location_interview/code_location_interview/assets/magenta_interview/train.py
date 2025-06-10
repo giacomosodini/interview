@@ -19,7 +19,7 @@ log_datefmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(stream=sys.stdout, format=log_fmt, datefmt=log_datefmt, level=logging.INFO)
 logger = get_dagster_logger(__name__)
 
-group_name = "churn_smartphone_training"
+group_name = "training"
 
 
 @multi_asset(
@@ -35,7 +35,7 @@ group_name = "churn_smartphone_training"
 )
 def split_train_test(df_input_preprocessed):
     X = df_input_preprocessed.copy()
-    train_data, test_data = train_test_split(X, test_size=0.2, random_state=42, stratify=X["has_churned"])
+    train_data, test_data = train_test_split(X, test_size=0.2, random_state=42, stratify=X["has_done_upselling"])
     print(train_data.head())
     print(test_data.head())
     return train_data, test_data
@@ -82,7 +82,7 @@ def classifier(train_data):
     )
 
     # Separate target variable
-    y_train = train_data.pop("has_churned")
+    y_train = train_data.pop("has_done_upselling")
     # train_data = train_data.set_index("rating_account_id")
 
     # Train the pipeline
@@ -96,7 +96,7 @@ def classifier(train_data):
     
 )
 def evaluation_metrics(classifier, test_data):
-    y_test = test_data.pop("has_churned")
+    y_test = test_data.pop("has_done_upselling")
     # test_data = test_data.set_index("rating_account_id")
 
     # Predicted labels
