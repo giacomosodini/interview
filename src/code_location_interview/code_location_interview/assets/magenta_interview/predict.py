@@ -20,7 +20,7 @@ group_name = "churn_smartphone_predict"
 )
 def predictions(classifier, df_input_preprocessed):
     # Not really convenient to reset index every time
-    df_input_preprocessed = df_input_preprocessed.set_index("rating_account_id")
+    # df_input_preprocessed = df_input_preprocessed.set_index("rating_account_id")
     y_pred = classifier.predict_proba(df_input_preprocessed)[:, 1]
 
     predictions_df = pd.DataFrame()

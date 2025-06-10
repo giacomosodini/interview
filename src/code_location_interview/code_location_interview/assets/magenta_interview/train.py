@@ -36,7 +36,8 @@ group_name = "churn_smartphone_training"
 def split_train_test(df_input_preprocessed):
     X = df_input_preprocessed.copy()
     train_data, test_data = train_test_split(X, test_size=0.2, random_state=42, stratify=X["has_churned"])
-
+    print(train_data.head())
+    print(test_data.head())
     return train_data, test_data
 
 
@@ -82,7 +83,7 @@ def classifier(train_data):
 
     # Separate target variable
     y_train = train_data.pop("has_churned")
-    train_data = train_data.set_index("rating_account_id")
+    # train_data = train_data.set_index("rating_account_id")
 
     # Train the pipeline
     pipeline.fit(train_data, y_train)
@@ -96,7 +97,7 @@ def classifier(train_data):
 )
 def evaluation_metrics(classifier, test_data):
     y_test = test_data.pop("has_churned")
-    test_data = test_data.set_index("rating_account_id")
+    # test_data = test_data.set_index("rating_account_id")
 
     # Predicted labels
     y_pred = classifier.predict(test_data)

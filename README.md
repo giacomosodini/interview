@@ -1,15 +1,26 @@
-# Interview 
+# Coding assignement for Data Scientist position in Magenta 
+
+Hello! You made it! You passed to the second round of interview to become a Data Scientist in Magenta!
+This last step is meant to allow us to get to know eah other a bit better: you will have the opportunity to code in a developing environment that resamble the one we are going to use in Magenta!
+
 
 This repository contains example pipelines and data for interview challenges.
 
 > This is an instance of https://github.com/l-mds/local-data-stack it may be useful for your own data projects.
 
-## usage
+## tools
 
 - pixi: https://pixi.sh/latest/advanced/installation/
+- Dagster: https://dagster.io/ (for futher learning: https://courses.dagster.io/)
+
+## usage
 - then: `pixi run start-dev`
-- go to http://localhost:3000
+- go to https://<your-code-space-name>-<random-chars>-3000.app.github.dev/
 - work on the assignments
+
+### Structure of the repository
+Here
+
 
 
 ## advanced usage
