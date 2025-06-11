@@ -22,8 +22,11 @@ src/code_location_interview/code_location_interview/assets/magenta_interview
 - dbt: https://www.getdbt.com/
 
 ## usage
-- then: `pixi run start-dev`
-- go to https://<your-code-space-name>-<random-chars>-3000.app.github.dev/
+- clone the repository in your GitHub space
+- open a CodeSpace - it will take a while (1-2 minutes because it's setting up the container)
+- then run in the terminal: `pixi run start-dev` - this command will start your pixi environment
+- go to https://<your-code-space-name>-<random-chars>-3000.app.github.dev/ or press on "Open in Browser" in the pop-up that it will appear.  
+  Here you can see the Dagster pipeline. Click on materialize an assets to see the assets we have preppared for you
 - work on the assignments
 
 ## Your Assignment
