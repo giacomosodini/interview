@@ -19,10 +19,10 @@ models:
   +persist_docs:
     relation: true
     columns: true
-  code_location_interview:
+  # code_location_interview:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+    # example:
+      #+materialized: view
       #+schema: xyz
 
   post-hook:
