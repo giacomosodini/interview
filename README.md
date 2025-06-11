@@ -43,7 +43,7 @@ We’ve prepared three datasets:
 
 - `core_data`: contract-level information
 - `usage_info`: data usage and roaming activity from the past 3 months
-- `cases`: customer service interaction records
+- `customer_interactions`: customer service interaction records
 
 To access all sample data, materialize the assets in the `get_data` group under the `interview` folder:
 
