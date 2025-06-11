@@ -1,79 +1,91 @@
-# Coding assignement for Data Scientist position in Magenta 
+# Coding Assignment for Data Scientist Position at Magenta
 
-Hello! You made it! You passed to the second round of interview to become a Data Scientist in Magenta!  
-This last step is meant to allow us to get to know eah other a bit better: you will have the opportunity to code in a developing environment that resamble the one we are going to use in Magenta.
+Hello! You made it to the second round of interviews for the Data Scientist position at Magenta – congratulations!  
+This step is designed to help us get to know each other better. You'll get the chance to work in a development environment that closely resembles the one we use at Magenta.
 
+---
 
-### Quick start
+## Quick Start
 
-This repository contains example pipelines and data for interview challenges.
+This repository contains example pipelines and data for your interview assignment.
 
-> This is an instance of https://github.com/l-mds/local-data-stack it may be useful for your own data projects.
-> To read more about this: https://georgheiler.com/post/lmds-template/
+> This setup is based on [l-mds/local-data-stack](https://github.com/l-mds/local-data-stack), which may be useful for your own data projects.  
+> More info: https://georgheiler.com/post/lmds-template/
 
+Steps to get started:
 
-- Clone the repository in your GitHub space.
-- Open a CodeSpace – it will take a while (1–2 minutes as it sets up the container).
-- Then run in the terminal: `pixi run start-dev` – this command will start your Pixi environment.
-- Go to `https://<your-code-space-name>-<random-chars>-3000.app.github.dev/` or click on **"Open in Browser"** in the pop-up that appears.  
-  Here you can see the Dagster pipeline. Click on **"Materialize an asset"** to view the assets we have prepared for you.
-- Work on the assignments.
+- Clone the repository to your GitHub space.
+- Open a **Codespace** – setup may take 1–2 minutes.
+- In the terminal, run `pixi run start-dev` – this command will start your Pixi environment.
+- Open your browser and go to `https://<your-code-space-name>-<random-chars>-3000.app.github.dev/`  
+  or click **"Open in Browser"** when prompted.
+- You can now access the **Dagster** code location. Click **"Materialize an asset"** to view the assets we've prepared.
+- You're now ready to begin the assignment.
 
 
 ## Your Assignment
 
 Imagine you are a data scientist at Magenta and your task is to pitch a new use case for upselling activities to the marketing department.  
-The goal of this project is to use machine learning to optimize which customers to target for upselling campaigns.
+The goal is to apply machine learning to better identify which customers to target for upselling campaigns.
 
-> **Upselling**: A customer purchases a better and more expensive version of a product.  
+> **Upselling**: When a customer upgrades to a better and more expensive product.  
 > Example: A customer currently has a mobile contract with 10 GB data. After a marketing intervention, they upgrade to a 50 GB tariff.
 
 ### The assignment consists of two parts:
 
-### 1. Coding part
+---
 
-If possible, please integrate your code into this repository, following the structure and instructions provided.
+### 1. Coding Part
 
-We’ve prepared three sample datasets:
+Try to integrate your code into this repository, following the structure provided.
 
-- `core_data`: contains core information about the contract
-- `usage_info`: contains information about used data (GB) and roaming activity in the last 3 months
-- `cases`: contains information about customer calls
+We’ve prepared three datasets:
 
-To visualize all the sample datasets we have prepared for you, you need to materialize all the assets in `get_data` group in `interview` folder:
-![alt text](image.png) 
+- `core_data`: contract-level information
+- `usage_info`: data usage and roaming activity from the past 3 months
+- `cases`: customer service interaction records
 
-In this notebook: `notebooks/explore.ipynb` you can load the data you have materialized and you can explore them.
+To access all sample data, materialize the assets in the `get_data` group under the `interview` folder:
 
-We ask you to contribute to this folder: `src/code_location_interview/code_location_interview/assets/magenta_interview`.
-We have already created some structure there, but feel free to modify it how you think it's the best.
+![Data assets](image.png)
 
-Each time you change an asset or you create a new one and you want to see your changes reflected in Dagster, simply reload the asset definitions:
-![alt text](image-1.png)
-### 2. Presentation part
+In the notebook `notebooks/explore.ipynb`, you can load and explore the materialized data.
 
-You can use any presentation tool you prefer (e.g., PowerPoint).
+We ask you to contribute to the following folder:  
+`src/code_location_interview/code_location_interview/assets/magenta_interview`
 
-Prepare a 15-minute presentation aimed at a non-technical business audience.
+We’ve pre-filled some structure there, but feel free to adjust it as you see fit.
 
-Imagine you are in the early phase of the project. After doing some exploratory analysis, you now want to present your idea to the business.
-The presentation does not need to be limited to your code.  
-You may assume you have access to more features or that you’ve tested additional modeling approaches.
+> Tip: After changing or creating assets, reload them in Dagster to reflect updates:
 
-Please address the following questions in your presentation:
+![Reload assets](image-1.png)
 
-- How would you communicate the business value of your solution to stakeholders?
-- What is a clear metric to measure the success of your project?
+---
+
+### 2. Presentation Part
+
+Use any tool you prefer (e.g., PowerPoint, Google Slides) to prepare a **15-minute presentation** for a **non-technical business audience**.
+
+Imagine you are in the early phase of the project. You’ve performed some exploratory analysis and now you’re presenting your idea to stakeholders.
+
+> The presentation does not need to reflect only what you’ve implemented in code.  
+> Feel free to assume access to more features or experimentation with different approaches.
+
+Please cover the following points:
+
+- How would you communicate the business value of your solution?
+- What metric would you use to measure success?
 - How would you compute the business value generated by your model?
-- Which stakeholders would you involve, and at which stage of the project?
-- What modeling approach would you use? (input features, model type, evaluation strategy, etc.)
+- Which stakeholders would you involve, and at what stages?
+- What modeling approach would you propose? (e.g. input features, model type, evaluation)
 
-## Useful literature
 
-- pixi: https://pixi.sh/latest/advanced/installation/
-- Dagster: https://dagster.io/ (for futher learning: https://courses.dagster.io/)
+## Useful Literature
+
+- Pixi: https://pixi.sh/latest/advanced/installation/
+- Dagster: https://dagster.io/  
+  Further learning: https://courses.dagster.io/
 - dbt: https://www.getdbt.com/
-
 
 ## advanced usage
 # ## docker
