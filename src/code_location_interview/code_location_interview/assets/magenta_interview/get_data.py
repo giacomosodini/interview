@@ -133,7 +133,7 @@ def core_data():
     group_name=group_name,
     
 )
-def bills(rating_account_id):
+def usage_info(rating_account_id):
     # Create a DataFrame with all combinations of 'rating_account_id's and dates
     date_range = pd.date_range(start="2024-04-01", end="2024-07-01", freq="MS")
     billed_period_month_ds = date_range.strftime("%Y-%m-%d")
@@ -144,10 +144,10 @@ def bills(rating_account_id):
     )
     num_rows = len(index)
 
-    bills = pd.DataFrame(index=index).reset_index()
+    usage_info = pd.DataFrame(index=index).reset_index()
 
     # Generate 'has_used_roaming' (binary 0 or 1, 70% are 0)
-    bills["has_used_roaming"] = np.random.choice([0, 1], size=len(bills), p=[0.7, 0.3])
+    usage_info["has_used_roaming"] = np.random.choice([0, 1], size=len(usage_info), p=[0.7, 0.3])
 
     # Generate 'used_gb' (float between 0 and 70, can be 0)
     used_gb_distribution = np.concatenate(
@@ -158,18 +158,15 @@ def bills(rating_account_id):
             np.random.uniform(15, 70, int(num_rows * 0.25)),
         ]
     )
-    bills["used_gb"] = np.round(np.clip(used_gb_distribution, 0, 70), 1)
+    usage_info["used_gb"] = np.round(np.clip(used_gb_distribution, 0, 70), 1)
 
-    # Generate 'has_used_gb' based on 'used_gb'
-    bills["has_used_gb"] = (bills["used_gb"] > 1).astype(int)
-
-    return bills
+    return usage_info
 
 
 @asset(
     group_name=group_name,
 )
-def lisa_cases(unique_customer_ids):
+def customer_interactions(unique_customer_ids):
     # Randomly select 50% of customer IDs without replacement
     num_unique_customers = len(unique_customer_ids)
     selected_num = int(num_unique_customers * 0.5)
