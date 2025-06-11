@@ -47,7 +47,7 @@ We’ve prepared three datasets:
 
 To access all sample data, materialize the assets in the `get_data` group under the `interview` folder:
 
-![Data assets](image.png)
+![alt text](image-2.png)
 
 In the notebook `notebooks/explore.ipynb`, you can load and explore the materialized data.
 
