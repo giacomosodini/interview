@@ -50,7 +50,7 @@ To access all sample data, materialize the assets in the `get_data` group under 
 ![alt text](image-2.png)
 
 In the notebook `notebooks/explore.ipynb`, you can load and explore the materialized data.
-In the notebook we also described the dataset more in details.
+In the notebook we also described the datasets more in details.
 
 We ask you to contribute to the following folder:  
 `src/code_location_interview/code_location_interview/assets/magenta_interview`
