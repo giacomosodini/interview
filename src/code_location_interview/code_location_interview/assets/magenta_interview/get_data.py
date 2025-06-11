@@ -11,7 +11,7 @@ log_datefmt = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(stream=sys.stdout, format=log_fmt, datefmt=log_datefmt, level=logging.INFO)
 logger = get_dagster_logger(__name__)
 
-group_name = "churn_smartphone_get_data"
+group_name = "get_data"
 
 
 @multi_asset(
@@ -87,29 +87,26 @@ def core_data():
     smartphone_brand_options = ["iPhone", "Samsung", "Huawei", "Xiaomi", "OnePlus"]
     smartphone_brand = np.random.choice(smartphone_brand_options, size=num_rows, p=[0.4, 0.35, 0.2, 0.025, 0.025])
 
-    # Generate 'has_churned' with correlations and adjusted mean churn rate
-    churn_prob = (
-        0.1 * (age > 45)
-        + 0.15  # Older customers have a higher probability to churn
-        * ((contract_lifetime_days >= 650) & (contract_lifetime_days <= 850))
-        + 0.2 * ((remaining_binding_days >= 60) & (remaining_binding_days <= 120))  # Contract lifetime around 2 years
-        + -0.1 * (has_special_offer == 0)  # Remaining binding days between 60 and 120
-        + -0.1 * (is_magenta1_customer == 0)  # Special offer reduces churn probability
-        + 0.05 * (np.array(available_gb, dtype=float) > 30)  # Magenta1 customer reduces churn probability
-        + 0.1  # Higher available GB increases churn probability
-        * (gross_mrc > 35)  # Higher gross MRC increases churn probability
+    # Generate 'has_done_upselling' with correlations and adjusted mean upsell rate
+    upsell_prob = (
+        0.2 * (age < 45)  # Younger customers might be more likely to accept upsell offers
+        + 0.15 * ((contract_lifetime_days >= 300) & (contract_lifetime_days <= 365*4))  # Newer customers might be more open to upsell offers
+        + 0.1 * (remaining_binding_days < 60)  # Customers with few binding days might look for new offers
+        + 0.1 * (is_magenta1_customer == 1)  # Magenta1 customers might be more engaged and open to upsell
+        + 0.2 * (np.array(available_gb, dtype=float) <= 20)  # Customers with less available GB might want more
+        + 0.1 * (gross_mrc < 35)  # Customers with lower gross MRC might be interested in upgrading
     )
-    churn_prob
-    churn_prob = np.clip(churn_prob, 0, 1)  # Ensure probabilities are between 0 and 1
-    has_churned = np.random.binomial(1, churn_prob)
 
-    # Adjust mean to be around 0.03 by scaling down/up if necessary
-    base_churn_prob = 0.03
-    current_mean = has_churned.mean()
+    upsell_prob = np.clip(upsell_prob, 0, 1)  # Ensure probabilities are between 0 and 1
+    has_done_upselling = np.random.binomial(1, upsell_prob)
+
+    # Adjust mean to be around 0.07 by scaling down/up if necessary
+    base_upsell_prob = 0.07
+    current_mean = has_done_upselling.mean()
     logger.info(current_mean)
-    scaling_factor = base_churn_prob / current_mean if current_mean != 0 else 1
-    adjusted_churn_prob = np.clip(churn_prob * scaling_factor, 0, 1)
-    has_churned = np.random.binomial(1, adjusted_churn_prob)
+    scaling_factor = base_upsell_prob / current_mean if current_mean != 0 else 1
+    adjusted_upsell_prob = np.clip(upsell_prob * scaling_factor, 0, 1)
+    has_done_upselling = np.random.binomial(1, adjusted_upsell_prob)
 
     # Create DataFrame
     logger.info("Create df")
@@ -125,7 +122,7 @@ def core_data():
             "available_gb": available_gb,
             "gross_mrc": gross_mrc,
             "smartphone_brand": smartphone_brand,
-            "has_churned": has_churned,
+            "has_done_upselling": has_done_upselling,
         }
     )
 
@@ -171,21 +168,6 @@ def bills(rating_account_id):
 
 @asset(
     group_name=group_name,
-    
-)
-def aggregated_bills(bills):
-    aggregated_bills = (
-        bills.groupby("rating_account_id")
-        .agg(has_used_roaming=("has_used_roaming", "max"), used_gb=("used_gb", "sum"), has_used_gb=("has_used_gb", "max"))
-        .reset_index()
-    )
-
-    return aggregated_bills
-
-
-@asset(
-    group_name=group_name,
-    
 )
 def lisa_cases(unique_customer_ids):
     # Randomly select 50% of customer IDs without replacement
@@ -198,7 +180,7 @@ def lisa_cases(unique_customer_ids):
         "produkte&services-tarifdetails",
         "produkte&services-tarifwechsel",
         "rechnungsanfragen",
-        "vvl",
+        "prolongation",
     ]
 
     # For each customer, assign a random number of topics (1 to 3)
@@ -222,112 +204,3 @@ def lisa_cases(unique_customer_ids):
     df_cases["days_since_last"] = np.random.randint(0, 181, size=len(df_cases))
 
     return df_cases
-
-
-@asset(
-    group_name=group_name,
-    
-)
-def pivoted_lisa_cases(lisa_cases):
-    lisa_cases = lisa_cases.set_index("customer_id")
-
-    df_cases_piv = (
-        lisa_cases.pivot(columns="type_subtype", values=["n", "days_since_last"])
-        .assign(n_cases=lambda df: df.n.sum(axis=1))
-        .assign(days_since_last_case=lambda df: df.days_since_last.min(axis=1))
-    )
-
-    # Fill na using MultiIndex
-    df_cases_piv.n = df_cases_piv.n.fillna(0)
-
-    # Remove MultiIndex
-    df_cases_piv.columns = ["_case_".join(col) if col[1] != "" else col[0] for col in df_cases_piv.columns]
-
-    return df_cases_piv
-
-
-@asset(
-    group_name=group_name,
-    
-)
-def df_input_raw(core_data, aggregated_bills, pivoted_lisa_cases):
-    df_input_raw = core_data.merge(aggregated_bills, on="rating_account_id", how="left").merge(
-        pivoted_lisa_cases, on="customer_id", how="left"
-    )
-
-    # Selecting only the required columns
-    df_input_raw = df_input_raw[
-        [
-            "rating_account_id",
-            "customer_id",
-            "age",
-            "contract_lifetime_days",
-            "remaining_binding_days",
-            "has_special_offer",
-            "is_magenta1_customer",
-            "available_gb",
-            "gross_mrc",
-            "smartphone_brand",
-            "has_churned",
-            "has_used_roaming",
-            "used_gb",
-            "has_used_gb",
-            "n_cases",
-            "days_since_last_case",
-            "n_case_produkte&services-tarifdetails",
-            "n_case_produkte&services-tarifwechsel",
-            "n_case_rechnungsanfragen",
-            "n_case_vvl",
-            "days_since_last_case_produkte&services-tarifdetails",
-            "days_since_last_case_produkte&services-tarifwechsel",
-            "days_since_last_case_rechnungsanfragen",
-            "days_since_last_case_vvl",
-        ]
-    ]
-
-    return df_input_raw
-
-
-@asset(
-    group_name=group_name,
-    
-)
-def df_input_preprocessed(df_input_raw):
-    """
-    - create perc_used_gb
-    - reduce number of categories in smartphone_brand, and introduce Other category
-    """
-
-    """
-    if available_gb=0, then perc_used_gb=used_gb to enhance the fact
-    that the customer is using GB even if they are not included
-    in the tariff.
-    to set it to 0 is misleading
-    to set it to NaN is a waste of info
-    to set it to inf is not possible because xgboost will raise an error
-    """
-    df_input_preprocessed = df_input_raw.assign(
-        available_gb=lambda df: df["available_gb"].fillna(0),
-        perc_used_gb=lambda df: np.where(df["available_gb"] != 0, df["used_gb"] / df["available_gb"], df["used_gb"]),
-        # Create categories for smartphone_brand
-        smartphone_brand=lambda df: np.select(
-            [
-                df.smartphone_brand.isnull(),
-                df.smartphone_brand.str.lower().isin(["samsung", "apple"]),
-                df.smartphone_brand.str.lower().isin(["huawei", "xiaomi"]),
-            ],
-            [
-                np.nan,
-                df.smartphone_brand,
-                "Huawei, Xiaomi",
-            ],
-            "Other",
-        ),
-    )
-    logger.info("Set index and remove customer id")
-    df_input_preprocessed = df_input_preprocessed.set_index("rating_account_id").drop("customer_id", axis=1)
-    # Index will be insterted in the BigQuery table as first column.
-    # But it is not recognised as index in future assets.
-    logger.info("Number of records in the final dataset: %d", len(df_input_preprocessed))
-
-    return df_input_preprocessed
