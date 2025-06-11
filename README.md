@@ -4,7 +4,7 @@ Hello! You made it! You passed to the second round of interview to become a Data
 This last step is meant to allow us to get to know eah other a bit better: you will have the opportunity to code in a developing environment that resamble the one we are going to use in Magenta.
 
 
-### Structure of the repository
+### Quick start
 
 This repository contains example pipelines and data for interview challenges.
 
@@ -12,26 +12,17 @@ This repository contains example pipelines and data for interview challenges.
 > To read more about this: https://georgheiler.com/post/lmds-template/
 
 
-src/code_location_interview/code_location_interview/assets/magenta_interview
+- Clone the repository in your GitHub space.
+- Open a CodeSpace – it will take a while (1–2 minutes as it sets up the container).
+- Then run in the terminal: `pixi run start-dev` – this command will start your Pixi environment.
+- Go to `https://<your-code-space-name>-<random-chars>-3000.app.github.dev/` or click on **"Open in Browser"** in the pop-up that appears.  
+  Here you can see the Dagster pipeline. Click on **"Materialize an asset"** to view the assets we have prepared for you.
+- Work on the assignments.
 
-
-## tools
-
-- pixi: https://pixi.sh/latest/advanced/installation/
-- Dagster: https://dagster.io/ (for futher learning: https://courses.dagster.io/)
-- dbt: https://www.getdbt.com/
-
-## usage
-- clone the repository in your GitHub space
-- open a CodeSpace - it will take a while (1-2 minutes because it's setting up the container)
-- then run in the terminal: `pixi run start-dev` - this command will start your pixi environment
-- go to https://<your-code-space-name>-<random-chars>-3000.app.github.dev/ or press on "Open in Browser" in the pop-up that it will appear.  
-  Here you can see the Dagster pipeline. Click on materialize an assets to see the assets we have preppared for you
-- work on the assignments
 
 ## Your Assignment
 
-Imagine you are the lead data scientist at Magenta and your task is to pitch a new use case for upselling activities to the marketing department.  
+Imagine you are a data scientist at Magenta and your task is to pitch a new use case for upselling activities to the marketing department.  
 The goal of this project is to use machine learning to optimize which customers to target for upselling campaigns.
 
 > **Upselling**: A customer purchases a better and more expensive version of a product.  
@@ -41,7 +32,7 @@ The goal of this project is to use machine learning to optimize which customers 
 
 ### 1. Coding part
 
-If possible, please integrate your code into this repository, following the structure and instructions provided earlier.
+If possible, please integrate your code into this repository, following the structure and instructions provided.
 
 We’ve prepared three sample datasets:
 
@@ -49,6 +40,16 @@ We’ve prepared three sample datasets:
 - `usage_info`: contains information about used data (GB) and roaming activity in the last 3 months
 - `cases`: contains information about customer calls
 
+To visualize all the sample datasets we have prepared for you, you need to materialize all the assets in `get_data` group in `interview` folder:
+![alt text](image.png) 
+
+In this notebook: `notebooks/explore.ipynb` you can load the data you have materialized and you can explore them.
+
+We ask you to contribute to this folder: `src/code_location_interview/code_location_interview/assets/magenta_interview`.
+We have already created some structure there, but feel free to modify it how you think it's the best.
+
+Each time you change an asset or you create a new one and you want to see your changes reflected in Dagster, simply reload the asset definitions:
+![alt text](image-1.png)
 ### 2. Presentation part
 
 You can use any presentation tool you prefer (e.g., PowerPoint).
@@ -56,9 +57,8 @@ You can use any presentation tool you prefer (e.g., PowerPoint).
 Prepare a 15-minute presentation aimed at a non-technical business audience.
 
 Imagine you are in the early phase of the project. After doing some exploratory analysis, you now want to present your idea to the business.
-
-> The presentation does not need to be limited to your code.  
-> You may assume you have access to more features or that you’ve tested additional modeling approaches.
+The presentation does not need to be limited to your code.  
+You may assume you have access to more features or that you’ve tested additional modeling approaches.
 
 Please address the following questions in your presentation:
 
@@ -68,7 +68,11 @@ Please address the following questions in your presentation:
 - Which stakeholders would you involve, and at which stage of the project?
 - What modeling approach would you use? (input features, model type, evaluation strategy, etc.)
 
+## Useful literature
 
+- pixi: https://pixi.sh/latest/advanced/installation/
+- Dagster: https://dagster.io/ (for futher learning: https://courses.dagster.io/)
+- dbt: https://www.getdbt.com/
 
 
 ## advanced usage
