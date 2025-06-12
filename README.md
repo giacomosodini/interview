@@ -48,7 +48,7 @@ To access all sample data, materialize the assets in the `get_data` group under 
 ![alt text](image-2.png)
 
 In the notebook `notebooks/explore.ipynb`, you can load and explore the materialized data. We also described the datasets more in details there.
-In order to run the code please use the `dev` Jupyter kernel.
+In order to run the code you can use the `dev` Jupyter kernel.
 
 Try to integrate your code into this repository, following the structure provided: we expect you to implement the model training and inference as Dagster assets.
 In particular, we ask you to contribute to the following folder:  
