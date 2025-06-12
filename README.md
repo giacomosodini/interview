@@ -35,9 +35,7 @@ The goal is to apply machine learning to better identify which customers to targ
 
 ---
 
-### 1. Coding Part
-
-Try to integrate your code into this repository, following the structure provided.
+### 1. Model implementation
 
 We’ve prepared three datasets:
 
@@ -49,13 +47,15 @@ To access all sample data, materialize the assets in the `get_data` group under 
 
 ![alt text](image-2.png)
 
-In the notebook `notebooks/explore.ipynb`, you can load and explore the materialized data.
-In the notebook we also described the datasets more in details.
+You can explore the materialized data in the notebook located at `notebooks/explore.ipynb`. 
+This notebook also provides a more detailed description of the datasets. To run the code, you can use the `dev` Jupyter kernel.
 
-We ask you to contribute to the following folder:  
+We encourage you to integrate your code into this repository, following the existing structure. 
+Specifically, we expect you to implement the model training and inference as Dagster assets.  
+Please contribute to the following folder:
 `src/code_location_interview/code_location_interview/assets/magenta_interview`
 
-We’ve pre-filled some structure there, but feel free to adjust it as you see fit.
+We've provided a basic structure to help you get started, but feel free to modify or extend it as needed.
 
 > Tip: After changing or creating assets, reload them in Dagster to reflect updates:
 
